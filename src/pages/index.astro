@@ -1,11 +1,45 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-    <Welcome />
+    <section class="h-screen flex items-center justify-center bg-black">
+        <h1 class="text-6xl text-center font-bold text-white">
+            Cast <mark class="magical-text">spells</mark>
+            <br />
+            on your desktop.
+        </h1>
+    </section>
+
+    <section>
+        <h2 class="text-4xl">hiii hello</h2>
+    </section>
 </Layout>
+
+<style>
+    .magical-text {
+        background: linear-gradient(
+            to right,
+            #6366f1,
+            #a855f7,
+            #ec4899,
+            #eab308,
+            #22c55e,
+            #3b82f6,
+            #6366f1
+        );
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: shine 8s linear infinite;
+        background-color: transparent;
+    }
+
+    @keyframes shine {
+        to {
+            background-position: 200% center;
+        }
+    }
+</style>
