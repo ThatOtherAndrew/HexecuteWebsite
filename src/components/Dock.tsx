@@ -1,9 +1,9 @@
 import { FloatingDock } from '@/components/ui/floating-dock';
 import {
     IconBrandGithub,
+    IconBug,
     IconDownload,
     IconHome,
-    IconBug,
 } from '@tabler/icons-react';
 
 export default function Dock() {
@@ -42,8 +42,8 @@ export default function Dock() {
         <div className="dark absolute bottom-20">
             <FloatingDock
                 items={links}
-                desktopClassName="scale-125 origin-bottom"
-                mobileClassName="scale-150 origin-bottom"
+                desktopClassName="!flex scale-125 origin-bottom"
+                mobileClassName="!hidden scale-150 origin-bottom"
             />
         </div>
     );

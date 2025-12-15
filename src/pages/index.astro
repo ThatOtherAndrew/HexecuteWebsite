@@ -14,7 +14,7 @@ import { Spotlight } from '@/components/ui/spotlight-new';
         <Spotlight client:load />
 
         <GlassCard>
-            <h1 class="text-center text-6xl/20 font-semibold text-white">
+            <h1 class="text-center font-semibold text-white">
                 Cast <mark>spells</mark>
                 <br />
                 on your desktop.
@@ -26,6 +26,11 @@ import { Spotlight } from '@/components/ui/spotlight-new';
 </Layout>
 
 <style>
+    h1 {
+        font-size: clamp(2rem, 10vw, 3.75rem);
+        /*line-height: calc(var(--spacing) * 20);*/
+    }
+
     mark {
         background: linear-gradient(
             to right,
