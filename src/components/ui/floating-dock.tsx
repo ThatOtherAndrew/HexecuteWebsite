@@ -8,7 +8,7 @@ import {
     type MotionValue,
 } from 'motion/react';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export const FloatingDock = ({
     items,
@@ -17,18 +17,34 @@ export const FloatingDock = ({
     items: { title: string; icon: React.ReactNode; href: string }[];
     className?: string;
 }) => {
+    const [isTouchscreen, setIsTouchscreen] = useState(false);
+
+    useEffect(() => {
+        setIsTouchscreen(
+            window.matchMedia('(pointer: coarse)').matches ||
+                'ontouchstart' in window ||
+                navigator.maxTouchPoints > 0,
+        );
+    }, []);
+
     let mouseX = useMotionValue(Infinity);
     return (
         <motion.div
             onMouseMove={(e) => mouseX.set(e.pageX)}
             onMouseLeave={() => mouseX.set(Infinity)}
             className={cn(
-                'mx-auto flex h-16 items-end rounded-2xl bg-[rgba(200,200,200,0.1)] px-2 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
+                'mx-auto flex items-end rounded-2xl bg-[rgba(200,200,200,0.1)] px-2 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
                 className,
+                isTouchscreen ? 'h-20' : 'h-16',
             )}
         >
             {items.map((item) => (
-                <IconContainer mouseX={mouseX} key={item.title} {...item} />
+                <IconContainer
+                    mouseX={mouseX}
+                    key={item.title}
+                    isTouchscreen={isTouchscreen}
+                    {...item}
+                />
             ))}
         </motion.div>
     );
@@ -39,11 +55,13 @@ function IconContainer({
     title,
     icon,
     href,
+    isTouchscreen,
 }: {
     mouseX: MotionValue;
     title: string;
     icon: React.ReactNode;
     href: string;
+    isTouchscreen: boolean;
 }) {
     let ref = useRef<HTMLDivElement>(null);
 
@@ -53,18 +71,26 @@ function IconContainer({
         return val - bounds.x - bounds.width / 2;
     });
 
-    let widthTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
-    let heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
+    let widthTransform = useTransform(
+        distance,
+        [-150, 0, 150],
+        isTouchscreen ? [60, 80, 60] : [40, 80, 40],
+    );
+    let heightTransform = useTransform(
+        distance,
+        [-150, 0, 150],
+        isTouchscreen ? [60, 80, 60] : [40, 80, 40],
+    );
 
     let widthTransformIcon = useTransform(
         distance,
         [-150, 0, 150],
-        [20, 40, 20],
+        isTouchscreen ? [30, 40, 30] : [20, 40, 20],
     );
     let heightTransformIcon = useTransform(
         distance,
         [-150, 0, 150],
-        [20, 40, 20],
+        isTouchscreen ? [30, 40, 30] : [20, 40, 20],
     );
 
     let width = useSpring(widthTransform, {
@@ -95,6 +121,7 @@ function IconContainer({
         <a
             href={href}
             className="group pointer-events-auto relative cursor-none px-2.5"
+            aria-label={title}
         >
             <motion.div
                 ref={ref}
@@ -104,7 +131,7 @@ function IconContainer({
                 className="relative flex aspect-square items-center justify-center rounded-full bg-[rgba(64,64,64,0.9)] inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] transition-colors group-hover:bg-[rgba(200,200,200,0.9)] group-hover:shadow-[0_0_20px_#eee]"
             >
                 <AnimatePresence>
-                    {hovered && (
+                    {(isTouchscreen || hovered) && (
                         <motion.div
                             initial={{ opacity: 0, y: 10, x: '-50%' }}
                             animate={{ opacity: 1, y: -10, x: '-50%' }}
