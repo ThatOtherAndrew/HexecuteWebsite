@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import Dock from '@/components/Dock';
 import GlassCard from '@/components/GlassCard.astro';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { Spotlight } from '@/components/ui/spotlight-new';
@@ -7,9 +8,11 @@ import { Spotlight } from '@/components/ui/spotlight-new';
 
 <Layout>
     <section
-        class="flex h-screen flex-col items-center justify-center bg-black/98"
+        class="relative flex h-dvh flex-col items-center justify-center overflow-hidden bg-black/98"
     >
+        <BackgroundBeams client:load />
         <Spotlight client:load />
+
         <GlassCard>
             <h1 class="text-center text-6xl/20 font-semibold text-white">
                 Cast <mark>spells</mark>
@@ -17,11 +20,8 @@ import { Spotlight } from '@/components/ui/spotlight-new';
                 on your desktop.
             </h1>
         </GlassCard>
-        <BackgroundBeams client:load />
-    </section>
 
-    <section>
-        <h2 class="text-4xl">hiii hello</h2>
+        <Dock client:load />
     </section>
 </Layout>
 
