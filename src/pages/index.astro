@@ -1,8 +1,8 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import { Spotlight } from '@/components/ui/spotlight-new';
-import { GlowingEffect } from '@/components/ui/glowing-effect';
 import GlassCard from '@/components/GlassCard.astro';
+import { BackgroundBeams } from '@/components/ui/background-beams';
+import { Spotlight } from '@/components/ui/spotlight-new';
 ---
 
 <Layout>
@@ -10,21 +10,14 @@ import GlassCard from '@/components/GlassCard.astro';
         class="flex h-screen flex-col items-center justify-center bg-black/98"
     >
         <Spotlight client:load />
-        <GlowingEffect
-            client:load
-            spread={40}
-            glow={true}
-            disabled={false}
-            proximity={64}
-            inactiveZone={0.01}
-        />
         <GlassCard>
-            <h1 class="text-center text-6xl font-bold text-white">
-                Cast <mark class="magical-text">spells</mark>
+            <h1 class="text-center text-6xl/20 font-semibold text-white">
+                Cast <mark>spells</mark>
                 <br />
                 on your desktop.
             </h1>
         </GlassCard>
+        <BackgroundBeams client:load />
     </section>
 
     <section>
@@ -33,7 +26,7 @@ import GlassCard from '@/components/GlassCard.astro';
 </Layout>
 
 <style>
-    .magical-text {
+    mark {
         background: linear-gradient(
             to right,
             #6366f1,
