@@ -23,7 +23,7 @@ export const FloatingDock = ({
             onMouseMove={(e) => mouseX.set(e.pageX)}
             onMouseLeave={() => mouseX.set(Infinity)}
             className={cn(
-                'mx-auto flex h-16 items-end rounded-2xl bg-[rgba(200,200,200,0.1)] px-4 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
+                'mx-auto flex h-16 items-end rounded-2xl bg-[rgba(200,200,200,0.1)] px-2 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
                 className,
             )}
         >
@@ -94,7 +94,7 @@ function IconContainer({
     return (
         <a
             href={href}
-            className="group pointer-events-auto relative cursor-none px-3"
+            className="group pointer-events-auto relative cursor-none px-2.5"
         >
             <motion.div
                 ref={ref}
