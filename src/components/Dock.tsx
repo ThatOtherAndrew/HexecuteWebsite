@@ -39,12 +39,8 @@ export default function Dock() {
     ];
 
     return (
-        <div className="dark absolute bottom-20">
-            <FloatingDock
-                items={links}
-                desktopClassName="!flex scale-125 origin-bottom"
-                mobileClassName="!hidden scale-150 origin-bottom"
-            />
+        <div className="absolute bottom-20">
+            <FloatingDock items={links} className="origin-bottom scale-125" />
         </div>
     );
 }
