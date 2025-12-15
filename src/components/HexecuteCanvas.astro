@@ -1,0 +1,156 @@
+---
+import cursorGlowFragRaw from '@/assets/shaders/cursorGlow.frag.glsl?raw';
+import cursorGlowVertRaw from '@/assets/shaders/cursorGlow.vert.glsl?raw';
+
+const toWebGL2 = (source: string) =>
+    source.replace(
+        '#version 410 core',
+        '#version 300 es\nprecision highp float;\n',
+    );
+
+const vertShader = toWebGL2(cursorGlowVertRaw);
+const fragShader = toWebGL2(cursorGlowFragRaw);
+---
+
+<canvas id="hex-canvas" class="absolute size-full touch-none"></canvas>
+
+<script is:inline define:vars={{ vertShader, fragShader }}>
+    const canvas = document.getElementById('hex-canvas');
+    const gl = canvas.getContext('webgl2', { alpha: true, antialias: false });
+
+    if (!gl) throw new Error('WebGL2 not supported');
+
+    // --- 1. Shader Compilation ---
+    const createShader = (type, source) => {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error(gl.getShaderInfoLog(shader));
+            gl.deleteShader(shader);
+            return null;
+        }
+        return shader;
+    };
+
+    const program = gl.createProgram();
+    gl.attachShader(program, createShader(gl.VERTEX_SHADER, vertShader));
+    gl.attachShader(program, createShader(gl.FRAGMENT_SHADER, fragShader));
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error(gl.getProgramInfoLog(program));
+    }
+    gl.useProgram(program);
+
+    // --- 2. Geometry (A simple Quad) ---
+    // The shader rotates/scales this, so we just need a unit square centered at 0
+    const vertices = new Float32Array([
+        -1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1,
+    ]);
+
+    const vbo = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+    // Layout 0 is 'position' in cursorGlow.vert.glsl
+    const posLoc = gl.getAttribLocation(program, 'position');
+    gl.enableVertexAttribArray(posLoc);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+    // --- 3. Uniform Locations ---
+    const locs = {
+        cursorPos: gl.getUniformLocation(program, 'cursorPos'), // <--- The target X, Y
+        resolution: gl.getUniformLocation(program, 'resolution'),
+        glowSize: gl.getUniformLocation(program, 'glowSize'),
+        rotation: gl.getUniformLocation(program, 'rotation'),
+        time: gl.getUniformLocation(program, 'time'),
+        velocity: gl.getUniformLocation(program, 'velocity'),
+        isDrawing: gl.getUniformLocation(program, 'isDrawing'),
+        exitProgress: gl.getUniformLocation(program, 'exitProgress'),
+    };
+
+    function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+
+        // Pass logical resolution (or physical, depending on shader logic).
+        // Usually logical is easier for mapping mouse coordinates.
+        gl.uniform2f(locs.resolution, canvas.width, canvas.height);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Enable alpha blending for the glow effect
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let mouseDown = false;
+    let smoothMouseDown = 0.0;
+
+    function lerp(deltaTime) {
+        console.log(deltaTime);
+        smoothMouseDown += (mouseDown - smoothMouseDown) * (deltaTime / 150);
+        console.log(smoothMouseDown);
+    }
+
+    function render(now) {
+        const rect = document
+            .getElementById('hex-canvas')
+            .getBoundingClientRect();
+        const targetX = mouseX - rect.left;
+        const targetY = mouseY - rect.top;
+
+        const time = now * 0.001;
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.uniform2f(
+            locs.cursorPos,
+            targetX * window.devicePixelRatio,
+            targetY * window.devicePixelRatio,
+        );
+
+        gl.uniform1f(locs.time, time);
+        gl.uniform1f(locs.glowSize, 150.0);
+        gl.uniform1f(locs.velocity, 0.0);
+        gl.uniform1f(locs.isDrawing, smoothMouseDown);
+        gl.uniform1f(locs.rotation, 0.0);
+        gl.uniform1f(locs.exitProgress, 0.0);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+
+    let lastTime;
+    function loop(now) {
+        if (!lastTime) lastTime = now;
+        const deltaTime = now - lastTime;
+        lastTime = now;
+
+        lerp(deltaTime);
+        render(now);
+        requestAnimationFrame(loop);
+    }
+
+    function updatePosition(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    }
+
+    window.addEventListener('pointermove', updatePosition);
+    window.addEventListener('pointerdown', () => {
+        mouseDown = true;
+        updatePosition;
+    });
+    window.addEventListener('pointerup', () => {
+        mouseDown = false;
+        updatePosition;
+    });
+
+    requestAnimationFrame(loop);
+</script>

@@ -1,18 +1,20 @@
 ---
-import Layout from '@/layouts/Layout.astro';
 import Dock from '@/components/Dock';
 import Features from '@/components/Features';
 import GlassCard from '@/components/GlassCard.astro';
+import HexecuteCanvas from '@/components/HexecuteCanvas.astro';
+import Layout from '@/layouts/Layout.astro';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { Spotlight } from '@/components/ui/spotlight-new';
 ---
 
 <Layout>
     <section
-        class="relative flex h-dvh flex-col items-center justify-center overflow-hidden bg-black/98"
+        class="relative flex h-dvh cursor-none flex-col items-center justify-center overflow-hidden bg-black/98"
     >
         <BackgroundBeams client:load />
         <Spotlight client:load />
+        <HexecuteCanvas />
 
         <GlassCard>
             <h1 class="text-center font-bold tracking-tight text-white">
