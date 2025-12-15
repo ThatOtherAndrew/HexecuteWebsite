@@ -1,6 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Dock from '@/components/Dock';
+import Features from '@/components/Features';
 import GlassCard from '@/components/GlassCard.astro';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { Spotlight } from '@/components/ui/spotlight-new';
@@ -14,7 +15,7 @@ import { Spotlight } from '@/components/ui/spotlight-new';
         <Spotlight client:load />
 
         <GlassCard>
-            <h1 class="text-center font-semibold text-white">
+            <h1 class="text-center font-bold tracking-tight text-white">
                 Cast <mark>spells</mark>
                 <br />
                 on your desktop.
@@ -23,12 +24,15 @@ import { Spotlight } from '@/components/ui/spotlight-new';
 
         <Dock client:load />
     </section>
+
+    <section id="about">
+        <Features client:load />
+    </section>
 </Layout>
 
 <style>
     h1 {
         font-size: clamp(2rem, 10vw, 3.75rem);
-        /*line-height: calc(var(--spacing) * 20);*/
     }
 
     mark {

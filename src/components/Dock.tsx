@@ -1,19 +1,19 @@
 import { FloatingDock } from '@/components/ui/floating-dock';
 import {
+    IconArticle,
     IconBrandGithub,
     IconBug,
     IconDownload,
-    IconHome,
 } from '@tabler/icons-react';
 
 export default function Dock() {
     const links = [
         {
-            title: 'Home',
+            title: 'About',
             icon: (
-                <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+                <IconArticle className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: '#',
+            href: '#about',
         },
         {
             title: 'Download',
