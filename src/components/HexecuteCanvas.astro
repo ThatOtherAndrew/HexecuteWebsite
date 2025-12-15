@@ -92,17 +92,30 @@ const fragShader = toWebGL2(cursorGlowFragRaw);
     let mouseY = 0;
     let mouseDown = false;
     let smoothMouseDown = 0.0;
+    let lastSpawnTime = null;
+    let smoothSize = 0.0;
 
-    function lerp(deltaTime) {
-        console.log(deltaTime);
+    function updateSmoothValues(now, deltaTime) {
+        if (lastSpawnTime === null) {
+            smoothSize -= Math.min((deltaTime * 50) / smoothSize, smoothSize);
+        } else {
+            const spawnDelta = (now - lastSpawnTime) / 1000;
+            if (spawnDelta < 1) {
+                smoothSize =
+                    150 *
+                    (Math.pow(2, -10 * spawnDelta) *
+                        Math.sin(
+                            (((spawnDelta * 10 - 0.75) * 2) / 3) * Math.PI,
+                        ) +
+                        1);
+            }
+        }
+
         smoothMouseDown += (mouseDown - smoothMouseDown) * (deltaTime / 150);
-        console.log(smoothMouseDown);
     }
 
     function render(now) {
-        const rect = document
-            .getElementById('hex-canvas')
-            .getBoundingClientRect();
+        const rect = canvas.getBoundingClientRect();
         const targetX = mouseX - rect.left;
         const targetY = mouseY - rect.top;
 
@@ -117,7 +130,7 @@ const fragShader = toWebGL2(cursorGlowFragRaw);
         );
 
         gl.uniform1f(locs.time, time);
-        gl.uniform1f(locs.glowSize, 150.0);
+        gl.uniform1f(locs.glowSize, smoothSize);
         gl.uniform1f(locs.velocity, 0.0);
         gl.uniform1f(locs.isDrawing, smoothMouseDown);
         gl.uniform1f(locs.rotation, 0.0);
@@ -132,7 +145,7 @@ const fragShader = toWebGL2(cursorGlowFragRaw);
         const deltaTime = now - lastTime;
         lastTime = now;
 
-        lerp(deltaTime);
+        updateSmoothValues(now, deltaTime);
         render(now);
         requestAnimationFrame(loop);
     }
@@ -150,6 +163,12 @@ const fragShader = toWebGL2(cursorGlowFragRaw);
     window.addEventListener('pointerup', () => {
         mouseDown = false;
         updatePosition;
+    });
+    canvas.addEventListener('pointerenter', () => {
+        lastSpawnTime = performance.now();
+    });
+    canvas.addEventListener('pointerleave', () => {
+        lastSpawnTime = null;
     });
 
     requestAnimationFrame(loop);

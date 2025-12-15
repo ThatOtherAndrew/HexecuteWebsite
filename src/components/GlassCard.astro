@@ -1,4 +1,8 @@
-<div class="m-5 rounded-2xl p-5 backdrop-blur">
+---
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class:list={['m-5 rounded-2xl p-5 backdrop-blur', className]} {...rest}>
     <slot />
 </div>
 

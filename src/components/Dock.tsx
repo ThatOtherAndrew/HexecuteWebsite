@@ -39,7 +39,7 @@ export default function Dock() {
     ];
 
     return (
-        <div className="absolute bottom-20">
+        <div className="pointer-events-none absolute bottom-20">
             <FloatingDock items={links} className="origin-bottom scale-125" />
         </div>
     );

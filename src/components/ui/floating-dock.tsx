@@ -23,7 +23,7 @@ export const FloatingDock = ({
             onMouseMove={(e) => mouseX.set(e.pageX)}
             onMouseLeave={() => mouseX.set(Infinity)}
             className={cn(
-                'mx-auto flex h-16 items-end gap-4 rounded-2xl bg-[rgba(200,200,200,0.1)] px-4 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
+                'mx-auto flex h-16 items-end rounded-2xl bg-[rgba(200,200,200,0.1)] px-4 pb-3 inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] backdrop-blur',
                 className,
             )}
         >
@@ -92,13 +92,16 @@ function IconContainer({
     const [hovered, setHovered] = useState(false);
 
     return (
-        <a href={href} className="relative cursor-none">
+        <a
+            href={href}
+            className="group pointer-events-auto relative cursor-none px-3"
+        >
             <motion.div
                 ref={ref}
                 style={{ width, height }}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
-                className="group relative flex aspect-square items-center justify-center rounded-full bg-[rgba(64,64,64,0.9)] inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] transition-colors hover:bg-[rgba(200,200,200,0.9)] hover:shadow-[0_0_20px_#eee]"
+                className="relative flex aspect-square items-center justify-center rounded-full bg-[rgba(64,64,64,0.9)] inset-shadow-[-2px_-2px_10px_rgba(255,255,255,0.1)] transition-colors group-hover:bg-[rgba(200,200,200,0.9)] group-hover:shadow-[0_0_20px_#eee]"
             >
                 <AnimatePresence>
                     {hovered && (
