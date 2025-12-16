@@ -5,6 +5,7 @@ import { site } from 'astro:config/client';
 
 const title = 'Hexecute 🪄';
 const description = 'Cast spells on your desktop.';
+const socialImageUrl = new URL('/demo.gif', site);
 const saScriptUrl = 'https://sa-api.hexecute.app/latest.js';
 ---
 
@@ -19,8 +20,13 @@ const saScriptUrl = 'https://sa-api.hexecute.app/latest.js';
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:url" content={site} />
-        <meta property="og:image" content="/demo.gif" />
+        <meta property="og:image" content={socialImageUrl} />
         <meta property="og:description" content={description} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={socialImageUrl} />
 
         <!-- Favicon links -->
         <link
