@@ -47,7 +47,9 @@ export const DriftingVideo = ({ src }: { src: string }) => {
         // Spawn loop
         const interval = setInterval(
             () => {
-                spawnVideo();
+                if (!document.hidden) {
+                    spawnVideo();
+                }
             },
             3000 + Math.random() * 6000,
         );
