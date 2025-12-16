@@ -1,10 +1,12 @@
 ---
+import demoVideo from '@/assets/hexecute_demo.mp4';
 import Dock from '@/components/Dock';
 import GlassCard from '@/components/GlassCard.astro';
 import HexecuteCanvas from '@/components/HexecuteCanvas.astro';
 import Layout from '@/layouts/Layout.astro';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { Spotlight } from '@/components/ui/spotlight-new';
+import { DriftingVideo } from '@/components/DriftingVideo';
 ---
 
 <Layout>
@@ -13,6 +15,7 @@ import { Spotlight } from '@/components/ui/spotlight-new';
     >
         <BackgroundBeams client:load />
         <Spotlight client:load />
+        <DriftingVideo client:only="react" src={demoVideo} />
         <HexecuteCanvas />
 
         <GlassCard class="pointer-events-none">
