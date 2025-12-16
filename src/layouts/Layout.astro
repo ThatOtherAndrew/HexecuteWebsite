@@ -5,6 +5,7 @@ import { site } from 'astro:config/client';
 
 const title = 'Hexecute 🪄';
 const description = 'Cast spells on your desktop.';
+const saScriptUrl = 'https://sa-api.hexecute.app/latest.js';
 ---
 
 <!doctype html>
@@ -41,11 +42,7 @@ const description = 'Cast spells on your desktop.';
         <slot />
 
         <!-- 100% privacy-first analytics -->
-        <script
-            is:inline
-            data-collect-dnt="true"
-            async
-            src="https://scripts.simpleanalyticscdn.com/latest.js"
+        <script is:inline data-collect-dnt="true" async src={saScriptUrl}
         ></script>
     </body>
 </html>
