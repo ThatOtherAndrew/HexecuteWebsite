@@ -13,7 +13,7 @@ export default function Dock() {
             icon: (
                 <IconArticle className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: '#about',
+            href: 'https://www.reddit.com/r/unixporn/comments/1o6jdez/oc_hexecute_i_made_a_magic_gesture_launcher_for/',
         },
         {
             title: 'Download',
