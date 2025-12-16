@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
 import '@fontsource-variable/geist';
+import { site } from 'astro:config/client';
+
+const title = 'Hexecute 🪄';
+const description = 'Cast spells on your desktop.';
 ---
 
 <!doctype html>
@@ -8,8 +12,16 @@ import '@fontsource-variable/geist';
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <title>Hexecute 🪄</title>
+        <title>{title}</title>
 
+        <!-- Open Graph tags -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:url" content={site} />
+        <meta property="og:image" content="/demo.gif" />
+        <meta property="og:description" content={description} />
+
+        <!-- Favicon links -->
         <link
             rel="icon"
             type="image/png"
