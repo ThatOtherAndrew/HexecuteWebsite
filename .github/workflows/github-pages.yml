@@ -1,7 +1,9 @@
 name: GitHub Pages
+
 on:
-    - push
-    - workflow_dispatch
+    push:
+        branches: [main]
+    workflow_dispatch:
 
 jobs:
     build:
@@ -9,18 +11,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
-            - name: Setup GitHub Pages
-              id: pages
-              uses: actions/configure-pages@v5
-            - name: Setup Bun
-              uses: oven-sh/setup-bun@v2
-            - name: Build site
-              run: bun install && bun run build
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: dist
+              uses: actions/checkout@v5
+            - name: Install, build, and upload site
+              uses: withastro/action@v5
 
     deploy:
         name: Deploy
