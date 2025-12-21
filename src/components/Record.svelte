@@ -5,11 +5,15 @@
     const controller = new PlaybackController();
 
     $effect(() => {
-        console.log('loaded');
         controller.loadFromUrl('/epic_molehill.wav');
     });
 </script>
 
-<div>
-    <VinylRecord {controller} bind:speed img="https://picsum.photos/200" />
+<div
+    onpointerdown={() => {
+        speed = 1;
+    }}
+    class="absolute aspect-square w-70 top-0 left-0 -translate-x-40 -translate-y-40 rounded-full hover:-translate-x-10 hover:-translate-y-10 transition-transform duration-300 ease-out"
+>
+    <VinylRecord {controller} bind:speed img="/web-app-manifest-192x192.png" />
 </div>
