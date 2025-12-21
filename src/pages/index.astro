@@ -4,6 +4,7 @@ import Dock from '@/components/Dock';
 import GlassCard from '@/components/GlassCard.astro';
 import HexecuteCanvas from '@/components/HexecuteCanvas.astro';
 import Layout from '@/layouts/Layout.astro';
+import Record from '@/components/Record.svelte';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { Spotlight } from '@/components/ui/spotlight-new';
 import { DriftingVideo } from '@/components/DriftingVideo';
@@ -28,6 +29,8 @@ import { DriftingVideo } from '@/components/DriftingVideo';
 
         <Dock client:load />
     </section>
+
+    <Record client:load />
 </Layout>
 
 <style>

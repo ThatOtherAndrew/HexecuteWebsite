@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+@source '../../node_modules/virtual-vinyl';
+
 html,
 body {
     margin: 0;
